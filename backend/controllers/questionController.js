@@ -31,12 +31,13 @@ const createQuestion= async(req, res) =>{
 
 const getAllQuestions=async(req, res)=>{
     try{
-        const question=Question.find();
+        const questions=await Question.find();
 
         return res.status(200).json({
             success:true,
             message:"all questions fetched successfully",
-            question,
+            count: questions.length,
+            questions,
         })
     }catch(err){
         console.log(err);
@@ -47,4 +48,60 @@ const getAllQuestions=async(req, res)=>{
         });
     }
 };
-module.exports={createQuestion, getAllQuestions};
+
+const getQuestionById=async(req, res)=>{
+  try{
+   
+    const question= await Question.findById(req.params.id).populate("createdBy", "name email");
+
+    if(!question){
+        return res.status(404).json({
+            success:false,
+            message:"No question found",
+        });
+    }
+
+    return res.status(200).json({
+        success:true,
+        question,
+    })
+  }catch(err){
+    console.log(err);
+
+    return res.status(500).json({
+        success:false,
+        message:"internal server error",
+    });
+  }
+};
+
+
+const getAllQuestionsByquery=async (req, res)=>{
+  try{
+    const{ difficulty, topic}=req.query;
+    
+    let filter={};
+    if(difficulty){
+       filter.difficulty=difficulty;
+    }
+
+    if(topic){
+        filter.topic=topic;
+    }
+
+    const questions=await Question.find(filter);
+
+    return res.status(200).json({
+        success:true,
+        questions
+    });
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({
+        success:false,
+        message:"internal server error"
+    })
+  }
+};
+
+module.exports={createQuestion, getAllQuestions, getQuestionById, getAllQuestionsByquery};
