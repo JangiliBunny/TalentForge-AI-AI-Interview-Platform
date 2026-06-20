@@ -29,4 +29,22 @@ const createQuestion= async(req, res) =>{
     }
 }
 
-module.exports={createQuestion};
+const getAllQuestions=async(req, res)=>{
+    try{
+        const question=Question.find();
+
+        return res.status(200).json({
+            success:true,
+            message:"all questions fetched successfully",
+            question,
+        })
+    }catch(err){
+        console.log(err);
+
+        return res.status(500).json({
+            success:false,
+            message:"internal server error",
+        });
+    }
+};
+module.exports={createQuestion, getAllQuestions};

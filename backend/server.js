@@ -22,6 +22,8 @@ app.get('/', (req, res)=>{
 
 app.use("/api/questions" , QuestionRoutes);
 
+app.get("/api/questions",QuestionRoutes)
+
 app.listen(PORT, ()=>{
     console.log("applications is running on port 5000");
 })
