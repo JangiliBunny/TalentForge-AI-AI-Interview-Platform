@@ -5,6 +5,7 @@ const cors=require('cors');
 const app=express();
 const connectDb=require("./config/db");
 const authRoutes=require("./routes/authRoutes");
+const QuestionRoutes=require("./routes/questionRoutes");
 
 connectDb();
 
@@ -17,7 +18,9 @@ app.use("/api/auth", authRoutes);
 
 app.get('/', (req, res)=>{
     res.send("ai intrview platform");
-})
+});
+
+app.use("/api/questions" , QuestionRoutes);
 
 app.listen(PORT, ()=>{
     console.log("applications is running on port 5000");
