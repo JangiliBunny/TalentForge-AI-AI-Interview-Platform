@@ -4,8 +4,10 @@ const express =require('express');
 const cors=require('cors');
 const app=express();
 const connectDb=require("./config/db");
+
 const authRoutes=require("./routes/authRoutes");
 const QuestionRoutes=require("./routes/questionRoutes");
+const InterviewRoutes=require("./routes/interviewRoutes");
 
 connectDb();
 
@@ -29,6 +31,8 @@ app.get("/api/questions/:id", QuestionRoutes);
 app.post("/api/questions/:id", QuestionRoutes);
 
 app.delete("/api/questions/:id", QuestionRoutes);
+
+app.use("/api/interviews", InterviewRoutes);
 
 app.listen(PORT, ()=>{
     console.log("applications is running on port 5000");
