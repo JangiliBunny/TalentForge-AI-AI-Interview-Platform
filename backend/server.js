@@ -24,15 +24,17 @@ app.get('/', (req, res)=>{
 
 app.use("/api/questions" , QuestionRoutes);
 
-app.get("/api/questions",QuestionRoutes)
+// app.get("/api/questions",QuestionRoutes)
 
-app.get("/api/questions/:id", QuestionRoutes);
+// app.get("/api/questions/:id", QuestionRoutes);
 
-app.post("/api/questions/:id", QuestionRoutes);
+// app.post("/api/questions/:id", QuestionRoutes);
 
-app.delete("/api/questions/:id", QuestionRoutes);
+// app.delete("/api/questions/:id", QuestionRoutes);
 
 app.use("/api/interviews", InterviewRoutes);
+
+// app.get("/api/interviews", InterviewRoutes);
 
 app.listen(PORT, ()=>{
     console.log("applications is running on port 5000");
