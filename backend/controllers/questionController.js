@@ -31,7 +31,7 @@ const createQuestion= async(req, res) =>{
 
 const getAllQuestions=async(req, res)=>{
     try{
-        const questions=await Question.find();
+        const questions=await Question.find().populate("createdBy", "name email");;
 
         return res.status(200).json({
             success:true,
@@ -89,7 +89,7 @@ const getAllQuestionsByquery=async (req, res)=>{
         filter.topic=topic;
     }
 
-    const questions=await Question.find(filter);
+    const questions=await Question.find(filter).populate("createdBy", "name email");
 
     return res.status(200).json({
         success:true,
@@ -104,4 +104,70 @@ const getAllQuestionsByquery=async (req, res)=>{
   }
 };
 
-module.exports={createQuestion, getAllQuestions, getQuestionById, getAllQuestionsByquery};
+const updateQuestion=async(req, res)=>{
+    try{
+        const question=await Question.findByIdAndUpdate( 
+            req.params.id,
+            req.body,{
+                new:true,
+                runValidators:true,
+            }
+        ) .populate("createdBy", "name email");
+
+        if(!question){
+            return res.status(401).json({
+                success:false,
+                message:"Question not Found",
+            });
+        }
+
+        return res.status(201).json({
+            success:true,
+            Message:"question updated successfully",
+            question
+        })
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({
+        success:false,
+        message:"internal server error"
+      });
+    }
+};
+
+const deleteQuestion= async (req, res)=>{
+    try{
+        const question= await Question.findByIdAndDelete(
+            req.params.id,
+            req.body,{
+                new :true,
+                runValidators:true,
+            }
+        );
+
+        if(!question){
+            return res.status(401).json({
+                success:false,
+                message:"Question not found",
+            })
+        }
+
+        return res.status(201).json({
+            success:true,
+            message:"question deleted",
+            question
+        });
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({
+            success:false,
+            message:"internal server error",
+        });
+    }
+};
+
+module.exports={
+                 createQuestion, getAllQuestions, 
+                 getQuestionById, getAllQuestionsByquery,
+                 updateQuestion , deleteQuestion
+                };
