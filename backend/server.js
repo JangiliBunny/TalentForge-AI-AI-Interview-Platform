@@ -9,6 +9,7 @@ const authRoutes=require("./routes/authRoutes");
 const QuestionRoutes=require("./routes/questionRoutes");
 const InterviewRoutes=require("./routes/interviewRoutes");
 const ansewerRoutes=require("./routes/answerRoutes");
+const dashboardRoutes=require("./routes/dashboardRoutes");
 
 connectDb();
 
@@ -38,6 +39,8 @@ app.use("/api/interviews", InterviewRoutes);
 // app.get("/api/interviews", InterviewRoutes);
 
 app.use("/api/answers", ansewerRoutes);
+
+app.use("/api/dashboard", dashboardRoutes);
 
 app.listen(PORT, ()=>{
     console.log("applications is running on port 5000");

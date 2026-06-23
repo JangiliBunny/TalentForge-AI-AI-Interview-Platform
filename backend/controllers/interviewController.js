@@ -102,8 +102,31 @@ const updateStatus= async (req, res)=>{
             message:"internal server error",
         });
     }
-}
+};
+
+
+const getMyInterviews =async(req, res)=>{
+    try{
+        const interview= await Interview.find({
+            user:req.user.userId,
+        }).populate("questions","topic difficulty").
+        populate("user", "name email");
+
+        return res.status(200).json({
+            success:true,
+            count: interview.length,
+            interview
+        });
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({
+            success:false,
+            message:"internal server error"
+        });
+    }
+};
 
 module.exports= {createInterview, getInterview,
-                 getInterviewById, updateStatus
+                 getInterviewById, updateStatus,
+                 getMyInterviews,
 };

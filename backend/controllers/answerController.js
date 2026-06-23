@@ -129,7 +129,9 @@ const getInterviewReport= async(req, res)=>{
             message:"internal server error",
         });
     }
-}
+};
+
+
 
 
 module.exports={createAnswer , getAnswerByInterview,
