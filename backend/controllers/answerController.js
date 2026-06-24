@@ -112,12 +112,21 @@ const getInterviewReport= async(req, res)=>{
 
         let averageScore= answers.length > 0 ? totalScore/answers.length : 0;
 
+        const scores = answers.map(answer => answer.score);
+        const highestScore =scores.length > 0? Math.max(...scores): 0;
+        const lowestScore =scores.length > 0? Math.min(...scores): 0;
+        const completionPercentage =totalQuestions > 0 ? Number((
+                (totalAnswers / totalQuestions) * 100 ).toFixed(2)): 0;
+
         return res.status(200).json({
             success:true,
             report:{
                 totalQuestions,
                 totalAnswers,
                 averageScore,
+                highestScore,
+                lowestScore,
+                completionPercentage,
                 status:interview.status,
             }
         })
