@@ -45,4 +45,114 @@ const getDashboardStats=async(req, res)=>{
 };
 
 
-module.exports={getDashboardStats};
+const getLeaderboard = async(req,res)=>{
+    try{
+
+        const leaderboard = await Answer.aggregate([{
+                    $group:{
+                        _id:"$user",
+                        averageScore:{
+                            $avg:"$score"
+                        },
+                        totalAnswers:{
+                            $sum:1
+                        }}},
+                    {
+                    $lookup:{
+                        from:"users",
+                        localField:"_id",
+                        foreignField:"_id",
+                        as:"user"
+                    }
+                },
+                {
+                    $unwind:"$user"
+                },
+                {
+                    $project:{
+                        _id:0,
+                        name:"$user.name",
+                        email:"$user.email",
+                        averageScore:{
+                            $round:[
+                                "$averageScore",
+                                2
+                            ]
+                        },
+                        totalAnswers:1
+                    }
+                },
+                {
+                    $sort:{
+                        averageScore:-1
+                    }
+                }
+            ]);
+
+        const rankedLeaderboard =leaderboard.map((user,index)=>({
+                                   rank:index+1, ...user }));    
+
+        return res.status(200).json({
+            success:true,
+            leaderboard:rankedLeaderboard
+        });
+
+    }catch(err){
+
+        console.log(err);
+
+        return res.status(500).json({
+            success:false,
+            message:"internal server error"
+        });
+
+    }
+};
+
+const getMyPerformance = async(req, res)=>{
+    try{
+        const answers=await Answer.find({user:req.user.userId});
+
+        const totalAnswers=answers.length;
+
+        const scores=answers.map(
+            answer=>answer.score
+        );
+
+        const averageScore= answers.length > 0 ? scores.reduce((sum, score)=> sum+=score, 0)/ totalAnswers:0;
+
+        const highestScore=scores.length  > 0 ? Math.max(...scores): 0;
+
+        const lowestScore=scores.length > 0 ? Math.min(...scores):0;
+
+        const recentAnswers=await Answer.find({
+            user:req.user.userId
+        }).sort({createdAt:-1}).limit(5).
+         select("score feedback answerText");
+
+        return res.status(200).json({
+            success:true,
+            performance:{
+                totalAnswers,
+                averageScore:Number(
+                        averageScore.toFixed(2)
+                    ),
+                highestScore,
+                lowestScore    
+            },
+            recentAnswers,
+        })
+    }catch(err){
+
+        console.log(err);
+
+        return res.status(500).json({
+            success:false,
+            message:"internal server error"
+        });
+
+    }
+};
+
+
+module.exports={getDashboardStats, getLeaderboard, getMyPerformance};

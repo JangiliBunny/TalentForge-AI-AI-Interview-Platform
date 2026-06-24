@@ -63,12 +63,19 @@ const evaluateAnswer= async(req, res)=>{
         }
 
         const question=await Question.findById(answer.question);
-        const aiResult =await evaluateAnswerWithAI(
+        try{
+            const aiResult =await evaluateAnswerWithAI(
                           question.description,
                           answer.answerText);
 
-        answer.score=aiResult.score;
-        answer.feedback=aiResult.feedback;
+         answer.score=aiResult.score;
+         answer.feedback=aiResult.feedback;
+        }catch(err){
+            answer.score = 5;
+
+          answer.feedback ="Evaluation temporarily unavailable.";
+         }
+        
 
         await answer.save();
 
