@@ -42,6 +42,22 @@ app.use("/api/answers", ansewerRoutes);
 
 app.use("/api/dashboard", dashboardRoutes);
 
+
+const {
+    evaluateAnswerWithAI
+} = require("./services/aiService");
+
+app.get("/test-ai", async(req,res)=>{
+
+    const result =
+        await evaluateAnswerWithAI(
+            "What is HashMap?",
+            "HashMap stores key value pairs."
+        );
+
+    res.send(result);
+});
+
 app.listen(PORT, ()=>{
     console.log("applications is running on port 5000");
 })

@@ -1,16 +1,12 @@
 const Answer= require("../models/Answer");
 const Interview=require("../models/Interview");
+const Question = require("../models/Question");
+
+const {evaluateAnswerWithAI} = require("../services/aiService");
 
 const createAnswer= async (req, res)=>{
     try{
         const {interview, question, user, answerText}=req.body;
-
-        // if(!interview || !question || !user || !answerText){
-        //     return res.status(401).json({
-        //         success:false,
-        //         message:"all fields are required",
-        //     })
-        // }
 
         const answer= await Answer.create({
             interview,
@@ -66,10 +62,15 @@ const evaluateAnswer= async(req, res)=>{
             });
         }
 
-        answer.score=8;
-        answer.feedback="good explanation , its optimal solution with hashmap";
+        const question=await Question.findById(answer.question);
+        const aiResult =await evaluateAnswerWithAI(
+                          question.description,
+                          answer.answerText);
 
-        answer.save();
+        answer.score=aiResult.score;
+        answer.feedback=aiResult.feedback;
+
+        await answer.save();
 
         return res.status(200).json({
             success:true,
