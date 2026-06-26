@@ -26,6 +26,11 @@ function Login(){
                 formData,
               );
               alert(res.data.message);
+              localStorage.setItem("token", res.data.token);
+              localStorage.setItem(
+                  "user",
+                  JSON.stringify(res.data.user)
+               );
               navigate("/dashboard");
          }catch (err) {
 
