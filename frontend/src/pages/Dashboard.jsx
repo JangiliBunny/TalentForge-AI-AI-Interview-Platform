@@ -1,51 +1,101 @@
-import { useState , useEffect} from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import api from "../services/api";
-import '../App.css';
+
+import Navbar from "../components/layout/Navbar";
+import Sidebar from "../components/layout/Sidebar";
+import StatCard from "../components/cards/StatCard";
+
+import {
+  Users,
+  ClipboardList,
+  CircleHelp,
+  BarChart3,
+  CheckCircle,
+} from "lucide-react";
 
 function Dashboard() {
-  const [stats, setStats]=useState(null);
 
-  
+  const [stats, setStats] = useState(null);
 
-  const fetchDashboard =async ()=>{
-    try{
-      const res=await api.get("/dashboard/stats");
-      setStats(res.data.stats);
-    }catch (err) {
-
-            console.log(err);
-  }
-  
-  
-};
-useEffect(()=>{
-
+  useEffect(() => {
     fetchDashboard();
+  }, []);
 
-},[]);
-return (
-    <div>
-        <h1>Dashboard</h1>
+  const fetchDashboard = async () => {
+    try {
 
-        {stats && (
-            <>
-                <h3>Total Users: {stats.totalUsers}</h3>
+      const res = await api.get("/dashboard/stats");
 
-                <h3>Total Interviews: {stats.totalInterviews}</h3>
+      setStats(res.data.stats);
 
-                <h3>Total Questions: {stats.totalQuestions}</h3>
+    } catch (err) {
 
-                <h3>Completed Interviews: {stats.completedInterviews}</h3>
+      console.log(err);
 
-                <h3>Total Answers: {stats.totalAnswers}</h3>
+    }
+  };
 
-                <h3>Average Score: {stats.averageScore}</h3>
-            </>
-        )}
+  return (
+
+    <div className="bg-gray-100 min-h-screen">
+
+      <Navbar />
+
+      <div className="flex">
+
+        <Sidebar />
+
+        <div className="flex-1 p-8">
+
+          <h1 className="text-3xl font-bold mb-8">
+            Dashboard
+          </h1>
+
+          {stats && (
+
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+              <StatCard
+                title="Total Users"
+                value={stats.totalUsers}
+                icon={<Users size={30} />}
+              />
+
+              <StatCard
+                title="Interviews"
+                value={stats.totalInterviews}
+                icon={<ClipboardList size={30} />}
+              />
+
+              <StatCard
+                title="Questions"
+                value={stats.totalQuestions}
+                icon={<CircleHelp size={30} />}
+              />
+
+              <StatCard
+                title="Completed"
+                value={stats.completedInterviews}
+                icon={<CheckCircle size={30} />}
+              />
+
+              <StatCard
+                title="Average Score"
+                value={stats.averageScore}
+                icon={<BarChart3 size={30} />}
+              />
+
+            </div>
+
+          )}
+
+        </div>
+
+      </div>
+
     </div>
-);
 
+  );
 }
 
 export default Dashboard;

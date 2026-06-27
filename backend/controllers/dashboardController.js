@@ -22,7 +22,7 @@ const getDashboardStats=async(req, res)=>{
             sum+=answer.score;
         }
 
-        let averageScore= totalAnswers > 0 ? sum / totalAnswers : 0;
+        let averageScore= totalAnswers > 0 ?( sum / totalAnswers).toFixed(2) : 0;
 
         return res.status(200).json({
             success:true,
@@ -118,8 +118,13 @@ const getMyPerformance = async(req, res)=>{
         const scores=answers.map(
             answer=>answer.score
         );
+        
+        const totalScore = answers.reduce((sum, answer) => sum + answer.score,0);
 
-        const averageScore= answers.length > 0 ? scores.reduce((sum, score)=> sum+=score, 0)/ totalAnswers:0;
+        const averageScore =totalAnswers > 0? Number((totalScore / totalAnswers).toFixed(2)): 0;
+        console.log(averageScore);
+
+        // const averageScore= answers.length > 0 ? (scores.reduce((sum, score)=> sum+=score, 0)/ totalAnswers).toFixed(2):0;
 
         const highestScore=scores.length  > 0 ? Math.max(...scores): 0;
 
