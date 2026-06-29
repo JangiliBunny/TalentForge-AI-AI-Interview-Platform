@@ -8,6 +8,7 @@ import QuestionDetails from "./pages/QuestionDetails";
 import Interview from "./pages/Interview";
 import Interviews from "./pages/Interviews";
 import InterviewDetails  from "./pages/InterviewDetails"
+import Report from "./pages/Report"
 
 function App(){
   return (
@@ -52,6 +53,10 @@ function App(){
        path="/interviews/:id"
        element={<InterviewDetails />}
     />
+     <Route
+       path="/report/:id"
+       element={<Report />}
+     />
     </Routes>
     </BrowserRouter>
   )

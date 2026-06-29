@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+
 import Navbar from "../components/layout/Navbar";
 import Sidebar from "../components/layout/Sidebar";
 import api from "../services/api";
@@ -63,6 +64,8 @@ function QuestionDetails() {
                         <p className="mt-6 text-gray-700">
                             <strong>Description:</strong>{question.description}
                         </p>
+
+                        
 
                     </div>
 

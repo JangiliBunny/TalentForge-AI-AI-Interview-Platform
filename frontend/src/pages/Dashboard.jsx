@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import api from "../services/api";
 
 import Navbar from "../components/layout/Navbar";
@@ -7,6 +9,7 @@ import StatCard from "../components/cards/StatCard";
 
 import {
   Users,
+  FileText,
   ClipboardList,
   CircleHelp,
   BarChart3,
@@ -16,7 +19,7 @@ import {
 function Dashboard() {
 
   const [stats, setStats] = useState(null);
-
+   const navigate=useNavigate();
   useEffect(() => {
     fetchDashboard();
   }, []);
@@ -47,48 +50,71 @@ function Dashboard() {
 
         <div className="flex-1 p-8">
 
-          <h1 className="text-3xl font-bold mb-8">
-            Dashboard
-          </h1>
+          <div className="mb-8">
+               <h1 className="text-3xl font-bold mb-2">
+                   Welcome back, Bunny 👋
+               </h1>
+
+               <p className="text-gray-500 mt-5">
+                  Track your interview performance and continue practicing.
+                 </p>
+          </div>
 
           {stats && (
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
+             
               <StatCard
-                title="Total Users"
-                value={stats.totalUsers}
-                icon={<Users size={30} />}
-              />
-
-              <StatCard
-                title="Interviews"
+                title="My Interviews"
                 value={stats.totalInterviews}
-                icon={<ClipboardList size={30} />}
+                icon={<ClipboardList size={28} />}
               />
 
               <StatCard
-                title="Questions"
-                value={stats.totalQuestions}
-                icon={<CircleHelp size={30} />}
-              />
-
-              <StatCard
-                title="Completed"
+                title="Completed Interviews"
                 value={stats.completedInterviews}
-                icon={<CheckCircle size={30} />}
+                icon={<CheckCircle size={28} />}
+              />
+
+              <StatCard
+                title="My Answers"
+                value={stats.totalAnswers}
+                icon={<FileText size={28} />}
               />
 
               <StatCard
                 title="Average Score"
                 value={stats.averageScore}
-                icon={<BarChart3 size={30} />}
+                icon={<BarChart3 size={28} />}
+              />
+
+              <StatCard
+                 title="Total Questions"
+                 value={stats.totalQuestions}
+                 icon={<CircleHelp size={28} />}
               />
 
             </div>
 
           )}
+        <div className="flex-1 p-8">
+          <button
+                onClick={() =>
+                  navigate(`/interviews`)
+                    }
+                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg m-2">
+                Start New Interview
+          </button>
 
+          <button
+                onClick={() =>
+                  navigate(`/questions`)
+                    }
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg ml-2">
+                Pratice New Questions
+          </button>
+        </div>
         </div>
 
       </div>

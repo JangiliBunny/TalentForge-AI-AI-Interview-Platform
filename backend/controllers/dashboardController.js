@@ -3,44 +3,101 @@ const Interview=require("../models/Interview");
 const Question=require("../models/Question");
 const Answer=require("../models/Answer");
 
-const getDashboardStats=async(req, res)=>{
-    try{
+// const getDashboardStats=async(req, res)=>{
+//     try{
         
-        let totalUsers=await User.countDocuments();
-        let totalInterviews=await Interview.countDocuments();
-        let totalQuestions=await Question.countDocuments();
+//         let totalUsers=await User.countDocuments();
+//         let totalInterviews=await Interview.countDocuments();
+//         let totalQuestions=await Question.countDocuments();
 
-        let completedInterviews=await Interview.countDocuments({
-                                    status: "completed"
-                                 });
+//         let completedInterviews=await Interview.countDocuments({
+//                                     status: "completed"
+//                                  });
         
-        const answers=await Answer.find();
-        let totalAnswers=await Answer.countDocuments();
+//         const answers=await Answer.find();
+//         let totalAnswers=await Answer.countDocuments();
         
-        let sum=0;
-        for(let answer of answers){
-            sum+=answer.score;
-        }
+//         let sum=0;
+//         for(let answer of answers){
+//             sum+=answer.score;
+//         }
 
-        let averageScore= totalAnswers > 0 ?( sum / totalAnswers).toFixed(2) : 0;
+//         let averageScore= totalAnswers > 0 ?( sum / totalAnswers).toFixed(2) : 0;
+
+//         return res.status(200).json({
+//             success:true,
+//             stats:{
+//                 totalUsers,
+//                 totalInterviews,
+//                 totalQuestions,
+//                 completedInterviews,
+//                 totalAnswers,
+//                 averageScore
+//             }
+//         });
+//     }catch(err){
+//         console.log(err);
+//         return res.status(500).json({
+//             success:false,
+//             message:"internal server error"
+//         });
+//     }
+// };
+
+const getDashboardStats = async (req, res) => {
+    try {
+
+        // Global statistics
+        const totalUsers = await User.countDocuments();
+        const totalQuestions = await Question.countDocuments();
+
+        // Logged-in user's statistics
+        const totalInterviews = await Interview.countDocuments({
+            user: req.user.userId
+        });
+
+        const completedInterviews = await Interview.countDocuments({
+            user: req.user.userId,
+            status: "completed"
+        });
+
+        const answers = await Answer.find({
+            user: req.user.userId
+        });
+
+        const totalAnswers = answers.length;
+
+        const totalScore = answers.reduce(
+            (sum, answer) => sum + answer.score,
+            0
+        );
+
+        const averageScore =
+            totalAnswers > 0
+                ? Number((totalScore / totalAnswers).toFixed(2))
+                : 0;
 
         return res.status(200).json({
-            success:true,
-            stats:{
+            success: true,
+            stats: {
                 totalUsers,
-                totalInterviews,
                 totalQuestions,
+                totalInterviews,
                 completedInterviews,
                 totalAnswers,
                 averageScore
             }
         });
-    }catch(err){
+
+    } catch (err) {
+
         console.log(err);
+
         return res.status(500).json({
-            success:false,
-            message:"internal server error"
+            success: false,
+            message: "Internal Server Error"
         });
+
     }
 };
 
