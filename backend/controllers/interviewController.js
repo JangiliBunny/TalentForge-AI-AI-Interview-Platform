@@ -1,5 +1,5 @@
 const Interview=require('../models/Interview');
-const {evaluateAnswerWithAI} = require("../services/aiService");
+const {evaluateInterviewWithAI} = require("../services/aiService");
 const Question=require("../models/Question");
 const Answer=require("../models/Answer");
 const createInterview=async(req, res)=>{
@@ -133,7 +133,7 @@ const submitInterview = async (req, res) => {
 
         const { answers } = req.body;
 
-        const interview = await Interview.findById(req.params.id);
+        const interview = await Interview.findById(req.params.id).populate("questions");
 
         if (!interview) {
             return res.status(404).json({
@@ -142,54 +142,47 @@ const submitInterview = async (req, res) => {
             });
         }
 
-        const savedAnswers = [];
+       const interviewData = [];
 
         for (const item of answers) {
+           const question = await Question.findById(item.questionId);
 
-            // Find Question
-            const question = await Question.findById(item.questionId);
+             interviewData.push({
 
-            if (!question) continue;
+              questionId: question._id,
+              title: question.title,
+              description: question.description,
+            answer: item.answerText
 
-            let score = 0;
-            let feedback = "";
+           });
+        }    
+       const aiResult =await evaluateInterviewWithAI(interviewData);
 
-            try {
 
-                const aiResult = await evaluateAnswerWithAI(
-                    question.description,
-                    item.answerText
-                );
+         if ( !aiResult.answers || aiResult.answers.length !== interviewData.length) {
+           return res.status(500).json({
+           success: false,
+           message: "AI evaluation failed."
+        });}
+ 
+       for(let i=0;i<answers.length;i++){
 
-                score = aiResult.score;
-                feedback = aiResult.feedback;
+       await Answer.create({
 
-            } catch (err) {
+        user:req.user.userId,
 
-                score = 5;
-                feedback = "Evaluation temporarily unavailable.";
+        interview:interview._id,
 
-            }
+        question:interviewData[i].questionId,
 
-            const savedAnswer = await Answer.create({
+        answerText:interviewData[i].answer,
 
-                user: req.user.userId,
+        score:aiResult.answers[i].score,
 
-                interview: interview._id,
+        feedback:aiResult.answers[i].feedback
 
-                question: question._id,
-
-                answerText: item.answerText,
-
-                score,
-
-                feedback
-
-            });
-
-            savedAnswers.push(savedAnswer);
-
-        }
+    });
+  }
 
         interview.status = "completed";
 
@@ -201,7 +194,83 @@ const submitInterview = async (req, res) => {
 
             message: "Interview submitted successfully.",
 
-            answers: savedAnswers
+             overallScore:aiResult.overallScore,
+
+             overallFeedback:aiResult.overallFeedback
+
+        });
+
+    } catch (err) {
+
+        console.log(err);
+
+        return res.status(500).json({
+
+            success: false,
+
+            message: "Internal Server Error"
+
+        });
+
+    }
+};
+
+const getInterviewReport = async (req, res) => {
+    try {
+
+        const interview = await Interview.findById(req.params.id);
+
+        if (!interview) {
+            return res.status(404).json({
+                success: false,
+                message: "Interview not found"
+            });
+        }
+
+        const answers = await Answer.find({
+            interview: req.params.id,
+            user: req.user.userId
+        }).populate(
+            "question",
+            "title description difficulty topic"
+        );
+
+        const totalQuestions = answers.length;
+
+        const totalScore = answers.reduce(
+            (sum, ans) => sum + ans.score,
+            0
+        );
+
+        const averageScore =
+            totalQuestions > 0
+                ? Number(
+                      (totalScore / totalQuestions).toFixed(2)
+                  )
+                : 0;
+
+        return res.status(200).json({
+
+            success: true,
+
+            report: {
+
+                interviewTitle: interview.title,
+
+                role: interview.role,
+
+                difficulty: interview.difficulty,
+
+                totalQuestions,
+
+                averageScore,
+
+                overallFeedback:
+                    "Great job! Keep practicing.",
+
+                answers
+
+            }
 
         });
 
@@ -222,5 +291,6 @@ const submitInterview = async (req, res) => {
 
 module.exports= {createInterview, getInterview,
                  getInterviewById, updateStatus,
-                 getMyInterviews,submitInterview
+                 getMyInterviews,submitInterview,
+                 getInterviewReport
 };

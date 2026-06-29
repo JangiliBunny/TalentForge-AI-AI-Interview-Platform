@@ -1,77 +1,77 @@
-const { GoogleGenerativeAI }=require("@google/generative-ai");
-const genAI=new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const evaluateAnswerWithAI=async (question , answer)=>{
-   const model=genAI.getGenerativeModel({model: "gemini-2.5-flash"});
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-//    const prompt = `You are a technical interviewer . Question ${question} CandidateAnswer ${answer} 
-//                     Evaluate the answer and return only valid JSON.
-//                     {
-//                     "score":0-10,
-//                     "feedback":"short feedbackk
-//                     }`;
+const evaluateInterviewWithAI = async (questionsAndAnswers) => {
 
-      const prompt =`You are an expert technical interviewer.
+    const model = genAI.getGenerativeModel({
+        model: "gemini-2.5-flash"
+    });
 
-Evaluate each answer.
+    let prompt = `
+You are an expert software engineering interviewer.
 
-Return ONLY JSON.
+Evaluate the following interview.
 
-Questions
+Score each answer from 0 to 10.
 
-1.
+Provide constructive feedback.
 
-Question:
-Two Sum
+Return ONLY valid JSON.
 
-Answer:
-I will solve it using two pointers.
+`;
 
-----------------
+    questionsAndAnswers.forEach((item, index) => {
 
-2.
+        prompt += `
+Question ${index + 1}
 
-Question:
-Best Time to Buy Stock
+Title:
+${item.title}
 
-Answer:
-Track lowest price...
+Description:
+${item.description}
 
-----------------
+Candidate Answer:
+${item.answer}
 
-3.
+------------------------
 
-Question:
-Product Except Self
+`;
 
-Answer:
-Use prefix and suffix...
+    });
 
-Return
+    prompt += `
+Return ONLY this JSON format.
 
 {
- "answers":[
-   {
-      "questionId":"",
+  "answers":[
+    {
+      "questionIndex":0,
       "score":8,
-      "feedback":"..."
-   }
- ],
- "overallFeedback":"..."
-}`
+      "feedback":"Good explanation."
+    }
+  ],
+  "overallScore":8,
+  "overallFeedback":"Overall good interview performance."
+}
+`;
 
-    const result= await model.generateContent(prompt);
-    
-    const response= await result.response;
+    const result = await model.generateContent(prompt);
 
-    const text=response.text();
+    const response = await result.response;
+
+    const text = response.text();
+
     const cleanedText = text
-    .replace(/```json/g, "")
-    .replace(/```/g, "")
-    .trim();
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
 
     return JSON.parse(cleanedText);
 
-}
+};
 
-module.exports={evaluateAnswerWithAI};
+module.exports = {
+    evaluateInterviewWithAI
+};

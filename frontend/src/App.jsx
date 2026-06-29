@@ -9,6 +9,8 @@ import Interview from "./pages/Interview";
 import Interviews from "./pages/Interviews";
 import InterviewDetails  from "./pages/InterviewDetails"
 import Report from "./pages/Report"
+import CreateInterview from "./pages/CreateInterview"
+import ReportPage from "./pages/ReportPage";
 
 function App(){
   return (
@@ -57,6 +59,15 @@ function App(){
        path="/report/:id"
        element={<Report />}
      />
+
+     <Route
+     path="/create-interview"
+     element={<CreateInterview />}
+    />
+    
+    <Route path="/report/:id"
+     element={<ReportPage />}
+    />
     </Routes>
     </BrowserRouter>
   )

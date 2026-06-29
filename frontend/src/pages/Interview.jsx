@@ -71,54 +71,50 @@ function Interview() {
         }
     };
 
-    const handleFinish = async () => {
+   const handleFinish = async () => {
 
-        if (
-            !window.confirm(
-                "Are you sure you want to submit the interview?"
-            )
-        ) {
-            return;
-        }
+    if (
+        !window.confirm(
+            "Are you sure you want to submit the interview?"
+        )
+    ) {
+        return;
+    }
 
-        const payload = interview.questions.map(
-            (question, index) => ({
-                questionId: question._id,
-                answerText:
-                    answers[index]?.trim() || "",
-            })
+    const payload = interview.questions.map((question, index) => ({
+        questionId: question._id,
+        answerText: answers[index]?.trim() || ""
+    }));
+
+    setLoading(true);
+
+    try {
+
+        await api.post(
+            `/interviews/${id}/submit`,
+            {
+                answers: payload
+            }
         );
 
-        console.log(payload);
+        navigate(`/report/${id}`);
 
-        setLoading(true);
+    } catch (err) {
 
-        try {
+        console.log(err);
 
-            // Next Step
-            // await api.post(`/interviews/${id}/submit`, {
-            //     answers: payload
-            // });
-               await api.post(
-                `/interviews/${id}/submit`,{
-                 answers: payload
-                }
-           );
+        alert(
+            err.response?.data?.message ||
+            "Failed to submit interview."
+        );
 
-          navigate(`/report/${id}`);
+    } finally {
 
-            alert("Interview Submitted!");
+        setLoading(false);
 
-        } catch (err) {
+    }
 
-            console.log(err);
-
-        } finally {
-
-            setLoading(false);
-
-        }
-    };
+};
 
     return (
         <div className="bg-gray-100 min-h-screen">

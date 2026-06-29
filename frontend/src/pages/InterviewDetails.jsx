@@ -171,11 +171,14 @@ function InterviewDetails() {
 
                             ) : (
 
-                                <button
-                                    className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg"
-                                >
-                                    View Report
-                                </button>
+                    <button
+                      className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg"
+                      onClick={() => {
+                      // console.log("Clicked", interview._id);
+                      navigate(`/report/${interview._id}`);
+                    }}>
+                     View Report
+                    </button> 
 
                             )}
 

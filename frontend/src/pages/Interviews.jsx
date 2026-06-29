@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 import Navbar from "../components/layout/Navbar";
 import Sidebar from "../components/layout/Sidebar";
 import InterviewCard from "../components/cards/InterviewCard";
 
 function Interviews() {
-
+    const navigate=useNavigate();
     const [interviews, setInterviews] = useState([]);
 
     const fetchInterviews = async () => {
@@ -44,11 +45,15 @@ function Interviews() {
                 <Sidebar />
 
                 <div className="flex-1 p-8">
-
+                   
                     <h1 className="text-3xl font-bold mb-8">
                         My Interviews
                     </h1>
-
+                    <button
+                       onClick={() => navigate("/create-interview")}
+                       className="bg-blue-600 text-white px-5 py-2 rounded-lg mb-5"
+                     >   + Create Interview
+                    </button>
                     {interviews.length > 0 ? (
 
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
