@@ -179,7 +179,6 @@ const getMyPerformance = async(req, res)=>{
         const totalScore = answers.reduce((sum, answer) => sum + answer.score,0);
 
         const averageScore =totalAnswers > 0? Number((totalScore / totalAnswers).toFixed(2)): 0;
-        console.log(averageScore);
 
         // const averageScore= answers.length > 0 ? (scores.reduce((sum, score)=> sum+=score, 0)/ totalAnswers).toFixed(2):0;
 
@@ -189,7 +188,7 @@ const getMyPerformance = async(req, res)=>{
 
         const recentAnswers=await Answer.find({
             user:req.user.userId
-        }).sort({createdAt:-1}).limit(5).
+        }).populate("question", "title").sort({createdAt:-1}).limit(5).
          select("score feedback answerText");
 
         return res.status(200).json({

@@ -11,6 +11,8 @@ import InterviewDetails  from "./pages/InterviewDetails"
 import Report from "./pages/Report"
 import CreateInterview from "./pages/CreateInterview"
 import ReportPage from "./pages/ReportPage";
+import Performance from "./pages/Performance"
+import Leaderboard from "./pages/Leaderboard"
 
 function App(){
   return (
@@ -68,6 +70,17 @@ function App(){
     <Route path="/report/:id"
      element={<ReportPage />}
     />
+    
+    <Route
+           path="/performance"
+          element={<Performance />}
+       />
+
+       <Route
+    path="/leaderboard"
+    element={<Leaderboard />}
+/>
+
     </Routes>
     </BrowserRouter>
   )
