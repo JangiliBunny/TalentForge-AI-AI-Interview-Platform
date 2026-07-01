@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
+import toast from "react-hot-toast";
 
 function Login(){
     const navigate=useNavigate();
@@ -24,7 +25,7 @@ function Login(){
                 "/auth/login",
                 formData,
               );
-              alert(res.data.message);
+             toast.success(res.data.message || "Login Successfull");
               localStorage.setItem("token", res.data.token);
               localStorage.setItem(
                   "user",
@@ -35,9 +36,9 @@ function Login(){
 
             console.log(err);
 
-            alert(
+            toast.error(
                 err.response?.data?.message ||
-                "Registration Failed"
+                "Login Failed"
             );
 
         }

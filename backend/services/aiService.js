@@ -72,6 +72,59 @@ Return ONLY this JSON format.
 
 };
 
+const generateInterviewWithAI = async ({
+    role,
+    difficulty,
+    totalQuestions,
+    topics
+}) => {
+
+    const model = genAI.getGenerativeModel({
+        model: "gemini-2.5-flash"
+    });
+
+    const prompt = `
+You are an expert technical interviewer.
+
+Generate ${totalQuestions} interview questions.
+
+Role:
+${role}
+
+Difficulty:
+${difficulty}
+
+Topics:
+${topics}
+
+Return ONLY valid JSON.
+
+[
+  {
+    "title":"",
+    "description":"",
+    "topic":"",
+    "difficulty":"${difficulty}"
+  }
+]
+`;
+
+    const result = await model.generateContent(prompt);
+
+    const response = result.response;
+
+    const text = response.text();
+
+    const cleaned = text
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
+
+    return JSON.parse(cleaned);
+
+};
+
 module.exports = {
-    evaluateInterviewWithAI
+    evaluateInterviewWithAI,
+    generateInterviewWithAI
 };

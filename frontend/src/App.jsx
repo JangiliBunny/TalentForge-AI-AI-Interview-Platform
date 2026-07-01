@@ -1,4 +1,5 @@
 import {BrowserRouter, Routes, Route} from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -13,6 +14,8 @@ import CreateInterview from "./pages/CreateInterview"
 import ReportPage from "./pages/ReportPage";
 import Performance from "./pages/Performance"
 import Leaderboard from "./pages/Leaderboard"
+import GenerateInterview from "./pages/GenerateInterview"
+
 
 function App(){
   return (
@@ -72,16 +75,23 @@ function App(){
     />
     
     <Route
-           path="/performance"
-          element={<Performance />}
-       />
+      path="/performance"
+      element={<Performance />}
+    />
 
-       <Route
-    path="/leaderboard"
-    element={<Leaderboard />}
-/>
+    <Route
+      path="/leaderboard"
+      element={<Leaderboard />}
+    />
+    <Route
+    path="/generate-interview"
+    element={<GenerateInterview />}
+    />
 
     </Routes>
+    <Toaster
+      position="top-right"
+    />
     </BrowserRouter>
   )
 

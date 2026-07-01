@@ -5,7 +5,8 @@ import {
   ClipboardList,
   Trophy,
   BarChart3,
-  LogOut
+  LogOut,
+  Bot 
 } from "lucide-react";
 
 function Sidebar() {
@@ -42,7 +43,12 @@ function Sidebar() {
             <ClipboardList size={20} />
              Interviews
         </Link>
-
+         <Link
+            to="/generate-interview"
+            className="flex items-center gap-2 hover:text-blue-600"
+         >  
+         <Bot size={20}/> AI Interview
+         </Link>
         <Link
           to="/leaderboard"
           className="flex items-center gap-3  hover:text-blue-400"

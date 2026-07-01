@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import Navbar from "../components/layout/Navbar";
 import Sidebar from "../components/layout/Sidebar";
@@ -103,7 +104,7 @@ function Interview() {
 
         console.log(err);
 
-        alert(
+        toast.error(
             err.response?.data?.message ||
             "Failed to submit interview."
         );
@@ -243,21 +244,22 @@ function Interview() {
                             {currentQuestion ===
                             interview.questions.length - 1 ? (
 
-                                <button
-                                    onClick={handleFinish}
-                                    disabled={
-                                        !answers[
-                                            currentQuestion
-                                        ]?.trim() || loading
-                                    }
-                                    className="px-6 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white disabled:bg-gray-300 disabled:cursor-not-allowed"
+                               <button
+                                 onClick={handleFinish}
+                                 disabled={
+                                 !answers[currentQuestion]?.trim() || loading
+                                 }
+                                 className="px-6 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                 >
-
-                                    {loading
-                                        ? "Submitting..."
-                                        : "Finish Interview"}
-
-                                </button>
+                                {loading ? (
+                                 <>
+                                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                 <span>Submitting...</span>
+                                </>
+                                 ) : (
+                                 "Finish Interview"
+                               )}
+                             </button>
 
                             ) : (
 

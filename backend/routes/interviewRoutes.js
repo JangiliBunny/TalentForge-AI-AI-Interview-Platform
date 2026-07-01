@@ -2,7 +2,8 @@ const express=require('express');
 const auth=require('../middlewares/authMiddleware');
 
 const {createInterview, getInterview, getInterviewById,
-     updateStatus,getMyInterviews,submitInterview, getInterviewReport}= require("../controllers/interviewController");
+     updateStatus,getMyInterviews,submitInterview, getInterviewReport,
+     generateInterview}= require("../controllers/interviewController");
 
 
 const router= express.Router();
@@ -12,6 +13,8 @@ router.post("/", auth , createInterview);
 router.get("/", auth, getInterview);
 
 router.get("/me/interviews", auth, getMyInterviews);
+
+router.post("/generate", auth, generateInterview);
 
 router.get("/:id", auth, getInterviewById);
 

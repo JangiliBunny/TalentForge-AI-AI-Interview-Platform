@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
 import Sidebar from "../components/layout/Sidebar";
 import api from "../services/api";
+import toast from "react-hot-toast";
 
 function CreateInterview() {
 
@@ -102,7 +103,7 @@ function CreateInterview() {
             });
            
 
-            alert("Interview Created Successfully");
+            toast.success("Interview Created Successfully");
 
             navigate("/interviews");
 
@@ -231,6 +232,7 @@ function CreateInterview() {
                                 Create Interview
 
                             </button>
+                           
 
                         </form>
 

@@ -1,5 +1,6 @@
 const Interview=require('../models/Interview');
 const {evaluateInterviewWithAI} = require("../services/aiService");
+const { generateInterviewWithAI } = require("../services/aiService");
 const Question=require("../models/Question");
 const Answer=require("../models/Answer");
 const createInterview=async(req, res)=>{
@@ -289,8 +290,59 @@ const getInterviewReport = async (req, res) => {
     }
 };
 
+const generateInterview = async (req, res) => {
+
+    try {
+
+        const {
+            role,
+            difficulty,
+            totalQuestions,
+            topics
+        } = req.body;
+
+        const aiQuestions = await generateInterviewWithAI({
+
+            role,
+            difficulty,
+            totalQuestions,
+            topics
+        });
+        const questionIds = [];
+        for (const item of aiQuestions) {
+            const question = await Question.create({
+                title: item.title,
+                description: item.description,
+                topic: item.topic,
+                difficulty: item.difficulty,
+                createdBy: req.user.userId
+            });
+            questionIds.push(question._id);
+        }
+        const interview = await Interview.create({
+            title: `${role} AI Interview`,
+            role,
+            difficulty,
+            questions: questionIds,
+            user: req.user.userId
+        });
+        return res.status(201).json({
+            success: true,
+            interviewId: interview._id,
+            interview
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to generate interview."
+        });
+    }
+
+};
+
 module.exports= {createInterview, getInterview,
                  getInterviewById, updateStatus,
                  getMyInterviews,submitInterview,
-                 getInterviewReport
+                 getInterviewReport, generateInterview
 };
