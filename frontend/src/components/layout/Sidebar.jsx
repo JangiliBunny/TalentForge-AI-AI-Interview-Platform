@@ -5,11 +5,13 @@ import {
   ClipboardList,
   Trophy,
   BarChart3,
-  LogOut,
-  Bot 
+  Bot ,
+  User,
+  Users
 } from "lucide-react";
 
 function Sidebar() {
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
 
     <div className="w-64 bg-gray-900 text-white min-h-screen p-6">
@@ -63,6 +65,50 @@ function Sidebar() {
         >
             <BarChart3 size={20}/>
            Performance
+        </Link>
+        
+
+      {user?.role === "admin" && (
+   <>
+    <Link
+        to="/admin"
+        className="flex items-center gap-3 hover:text-blue-400"
+    >
+        <LayoutDashboard size={20} />
+        <span>Admin Dashboard</span>
+    </Link>
+
+    <Link
+        to="/admin/users"
+        className="flex items-center gap-3 hover:text-blue-400"
+    >
+        <Users size={20} />
+        <span>Users</span>
+    </Link>
+
+    <Link
+        to="/admin/questions"
+        className="flex items-center gap-3 hover:text-blue-400"
+    >
+        <CircleHelp size={20} />
+        <span>Questions</span>
+    </Link>
+
+    <Link
+        to="/admin/interviews"
+        className="flex items-center gap-3 hover:text-blue-400"
+    >
+        <ClipboardList size={20} />
+        <span>Interviews</span>
+    </Link>
+</>
+
+     )}
+     <Link
+         to="/profile"
+         className="flex items-center gap-2 hover:text-blue-600"
+        >
+         <User size={20}/>Profile
         </Link>
 
       </div>

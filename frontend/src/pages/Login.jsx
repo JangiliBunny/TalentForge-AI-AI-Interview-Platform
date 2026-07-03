@@ -31,7 +31,11 @@ function Login(){
                   "user",
                   JSON.stringify(res.data.user)
                );
-              navigate("/dashboard");
+              if (res.data.user.role === "admin") {
+                navigate("/admin");
+               } else {
+                navigate("/dashboard");
+              }
          }catch (err) {
 
             console.log(err);

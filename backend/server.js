@@ -10,6 +10,7 @@ const QuestionRoutes=require("./routes/questionRoutes");
 const InterviewRoutes=require("./routes/interviewRoutes");
 const ansewerRoutes=require("./routes/answerRoutes");
 const dashboardRoutes=require("./routes/dashboardRoutes");
+const adminRoutes=require("./routes/adminRoutes");
 
 connectDb();
 
@@ -42,7 +43,9 @@ app.use("/api/answers", ansewerRoutes);
 
 app.use("/api/dashboard", dashboardRoutes);
 
+app.use("/api/admin", adminRoutes);
 
+ 
 const {
     evaluateAnswerWithAI
 } = require("./services/aiService");

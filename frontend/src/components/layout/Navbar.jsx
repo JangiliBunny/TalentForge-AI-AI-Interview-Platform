@@ -1,7 +1,4 @@
-import {
-  LogOut,
-  User
-} from 'lucide-react'
+
 import ProfileDropdown from "./ProfileDropdown";
 function Navbar() {
   

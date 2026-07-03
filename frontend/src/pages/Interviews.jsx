@@ -6,6 +6,11 @@ import Navbar from "../components/layout/Navbar";
 import Sidebar from "../components/layout/Sidebar";
 import InterviewCard from "../components/cards/InterviewCard";
 
+import {
+  Bot
+} from "lucide-react";
+
+
 function Interviews() {
     const navigate=useNavigate();
     const [interviews, setInterviews] = useState([]);
@@ -53,6 +58,13 @@ function Interviews() {
                        onClick={() => navigate("/create-interview")}
                        className="bg-blue-600 text-white px-5 py-2 rounded-lg mb-5"
                      >   + Create Interview
+                    </button>
+                    <button
+                            onClick={() => navigate("/generate-interview")}
+                            // className="w-full text-left flex gap-2 items-center px-5 py-3 hover:bg-gray-100"
+                            className="bg-green-600 text-white px-12 py-2 ml-4 rounded-lg mb-5"
+                    >
+                              AI Create Interview
                     </button>
                     {interviews.length > 0 ? (
 

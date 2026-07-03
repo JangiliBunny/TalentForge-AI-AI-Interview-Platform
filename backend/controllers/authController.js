@@ -140,6 +140,47 @@ const getMe= async(req , res)=>{
     }
 };
 
+const updateProfile = async (req,res)=>{
+    const {name}=req.body;
+    const user=await User.findByIdAndUpdate(
+        req.user.userId,
+        {name},
+        {new:true}
+    );
+    res.json({
+        success:true,
+        user
+    });
+};
+
+const changePassword = async(req,res)=>{
+    const {
+        oldPassword,
+        newPassword
+    }=req.body;
+    const user=await User.findById(
+        req.user.userId
+    );
+    const isMatch=await bycript.compare(
+        oldPassword,
+        user.password
+    );
+    if(!isMatch){
+        return res.status(400).json({
+            success:false,
+            message:"Old password is incorrect."
+        });
+    }
+    user.password=await bycript.hash(
+        newPassword,
+        10
+    );
+    await user.save();
+    res.json({
+        success:true,
+        message:"Password updated successfully."
+    });
+}
 
 
-module.exports={register , login, profile, getMe};
+module.exports={register , login, profile, getMe, updateProfile,changePassword};

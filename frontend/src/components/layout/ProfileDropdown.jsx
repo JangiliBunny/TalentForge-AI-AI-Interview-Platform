@@ -1,15 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserCircle } from "lucide-react";
 
 import {
-  LayoutDashboard,
-  CircleHelp,
-  ClipboardList,
   Trophy,
   BarChart3,
   LogOut,
-  Bot 
+  Bot ,User
 } from "lucide-react";
 
 function ProfileDropdown() {
@@ -48,10 +44,10 @@ const user = storedUser
                             </span>
                         </div>
                         <button
-                            onClick={() => navigate("/dashboard")}
+                            onClick={() => navigate("/profile")}
                             className=" flex gap-2 items-center w-full text-left px-5 py-3   hover:bg-gray-100"
                         >
-                           <LayoutDashboard size={18} /> Dashboard
+                           <User size={18} /> Profile
                         </button>
                         <button
                             onClick={() => navigate("/performance")}

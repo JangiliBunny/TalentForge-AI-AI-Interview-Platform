@@ -1,5 +1,6 @@
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import AdminRoute from "./components/AdminRoute";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -14,7 +15,14 @@ import CreateInterview from "./pages/CreateInterview"
 import ReportPage from "./pages/ReportPage";
 import Performance from "./pages/Performance"
 import Leaderboard from "./pages/Leaderboard"
+import Profile from "./pages/Profile";
 import GenerateInterview from "./pages/GenerateInterview"
+import ChangePassword from "./pages/ChangePassword";
+import EditProfile from "./pages/EditProfile";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminUsers from "./pages/AdminUsers";
+import AdminQuestions from "./pages/AdminQuestions";
+import AdminInterviews  from "./pages/AdminInterviews";
 
 
 function App(){
@@ -32,6 +40,11 @@ function App(){
        />
        <Route
            path="/dashboard"
+          element={<Dashboard />}
+       />
+
+       <Route
+           path="/"
           element={<Dashboard />}
        />
 
@@ -87,11 +100,71 @@ function App(){
     path="/generate-interview"
     element={<GenerateInterview />}
     />
+    <Route 
+            path="/profile"
+            element={<Profile />} 
+         />
+
+    <Route
+      path="/profile/edit"
+      element={<EditProfile />}
+    />
+
+    <Route
+      path="/change-password"
+      element={<ChangePassword />}
+    />     
+    
+    {/* <Route
+    path="/admin"
+    element={
+      <AdminRoute>
+       <AdminDashboard />
+      </AdminRoute>}
+    /> */}
+
+    <Route
+     path="/admin"
+     element={
+        <AdminRoute>
+            <AdminDashboard />
+        </AdminRoute>
+       }
+    />
+
+    <Route
+     path="/admin/users"
+     element={
+        <AdminRoute>
+            <AdminUsers />
+        </AdminRoute>
+     }
+    />
+
+   <Route
+     path="/admin/questions"
+     element={
+        <AdminRoute>
+            <AdminQuestions />
+        </AdminRoute>
+     }
+   />
+
+    <Route
+      path="/admin/interviews"
+      element={
+        <AdminRoute>
+            <AdminInterviews />
+        </AdminRoute>
+      }
+    />
+
 
     </Routes>
     <Toaster
       position="top-right"
     />
+
     </BrowserRouter>
   )
 

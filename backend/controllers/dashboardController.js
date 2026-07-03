@@ -186,6 +186,15 @@ const getMyPerformance = async(req, res)=>{
 
         const lowestScore=scores.length > 0 ? Math.min(...scores):0;
 
+        const totalInterviews = await Interview.countDocuments({
+                                  user: req.user.userId
+                                });
+
+        const completedInterviews = await Interview.countDocuments({
+                                   user: req.user.userId,
+                                  status: "completed"
+                                });
+
         const recentAnswers=await Answer.find({
             user:req.user.userId
         }).populate("question", "title").sort({createdAt:-1}).limit(5).
@@ -194,6 +203,8 @@ const getMyPerformance = async(req, res)=>{
         return res.status(200).json({
             success:true,
             performance:{
+                totalInterviews,
+                completedInterviews,
                 totalAnswers,
                 averageScore:Number(
                         averageScore.toFixed(2)
