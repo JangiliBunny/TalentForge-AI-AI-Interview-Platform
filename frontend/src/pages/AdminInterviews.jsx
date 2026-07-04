@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/layout/Navbar";
 import Sidebar from "../components/layout/Sidebar";
 import api from "../services/api";
+import toast from "react-hot-toast";
 
 function AdminInterviews() {
 
@@ -46,7 +47,7 @@ function AdminInterviews() {
             fetchInterviews();
         } catch (err) {
             console.log(err);
-            alert("Failed to delete interview.");
+            toast.error("Failed to delete interview.");
         }
     };
     if (loading) {

@@ -20,7 +20,7 @@ const createInterview=async(req, res)=>{
             message:"Interview created successfully",
         });
     }catch(err){
-        console.log(err);
+        console.error(err);
         return res.status(500).json({
             success:false,
             message:"internal server issue"
@@ -65,7 +65,7 @@ const getInterviewById= async(req, res)=>{
             interview,
         })
     }catch(err){
-        console.log(err);
+        console.error(err);
 
         return res.status(500).json({
             success:false,
@@ -98,7 +98,7 @@ const updateStatus= async (req, res)=>{
             interview
         });
     }catch(err){
-        console.log(err);
+        console.error(err);
 
         return res.status(500).json({
             success:false,
@@ -121,7 +121,7 @@ const getMyInterviews =async(req, res)=>{
             interview
         });
     }catch(err){
-        console.log(err);
+        console.error(err);
         return res.status(500).json({
             success:false,
             message:"internal server error"
@@ -203,7 +203,7 @@ const submitInterview = async (req, res) => {
 
     } catch (err) {
 
-        console.log(err);
+        console.error(err);
 
         return res.status(500).json({
 
@@ -277,7 +277,7 @@ const getInterviewReport = async (req, res) => {
 
     } catch (err) {
 
-        console.log(err);
+        console.error(err);
 
         return res.status(500).json({
 
@@ -332,7 +332,7 @@ const generateInterview = async (req, res) => {
             interview
         });
     } catch (err) {
-        console.log(err);
+        console.error(err);
         return res.status(500).json({
             success: false,
             message: "Failed to generate interview."

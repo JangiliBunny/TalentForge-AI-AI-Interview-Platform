@@ -4,8 +4,9 @@ import Navbar from "../components/layout/Navbar";
 import Sidebar from "../components/layout/Sidebar";
 import StatCard from "../components/cards/StatCard";
 import api from "../services/api";
+import toast from "react-hot-toast";
+
 import {
-  FileText,
   ClipboardList,
   CircleHelp,
   BarChart3,
@@ -21,7 +22,12 @@ function AdminDashboard(){
             const res=await api.get("/admin/dashboard");
             setStats(res.data.stats);
         }catch(err){
-            console.log(err);
+            console.error(err);
+
+         toast.error(
+           err.response?.data?.message ||
+           "Something went wrong."
+    );
         }
     }
 

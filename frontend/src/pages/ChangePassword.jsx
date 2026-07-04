@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/layout/Navbar";
 import Sidebar from "../components/layout/Sidebar";
 import api from "../services/api";
+import toast from "react-hot-toast";
 
 function ChangePassword() {
     const navigate = useNavigate();
@@ -34,11 +35,11 @@ function ChangePassword() {
                     newPassword: formData.newPassword
                 }
             );
-            alert("Password Changed Successfully");
+            toast.success("Password Changed Successfully");
             navigate("/profile");
         } catch (err) {
             console.log(err);
-            alert(
+            toast.error(
                 err.response?.data?.message ||
                 "Failed to change password."
             );

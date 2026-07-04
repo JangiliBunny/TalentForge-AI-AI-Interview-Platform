@@ -20,7 +20,7 @@ const createQuestion= async(req, res) =>{
         });
 
     }catch(err){
-        console.log(err);
+        console.error(err);
 
         return res.status(500).json({
             success:false,
@@ -40,7 +40,7 @@ const getAllQuestions=async(req, res)=>{
             questions,
         })
     }catch(err){
-        console.log(err);
+        console.error(err);
 
         return res.status(500).json({
             success:false,
@@ -66,7 +66,7 @@ const getQuestionById=async(req, res)=>{
         question,
     })
   }catch(err){
-    console.log(err);
+    console.error(err);
 
     return res.status(500).json({
         success:false,
@@ -96,7 +96,7 @@ const getAllQuestionsByquery=async (req, res)=>{
         questions
     });
   }catch(err){
-    console.log(err);
+    console.error(err);
     return res.status(500).json({
         success:false,
         message:"internal server error"
@@ -127,7 +127,7 @@ const updateQuestion=async(req, res)=>{
             question
         })
     }catch(err){
-        console.log(err);
+        console.error(err);
         return res.status(500).json({
         success:false,
         message:"internal server error"
@@ -158,7 +158,7 @@ const deleteQuestion= async (req, res)=>{
             question
         });
     }catch(err){
-        console.log(err);
+        console.error(err);
         return res.status(500).json({
             success:false,
             message:"internal server error",

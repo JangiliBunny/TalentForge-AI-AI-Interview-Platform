@@ -18,17 +18,11 @@ function Interviews() {
     const fetchInterviews = async () => {
 
         try {
-
             const res = await api.get("/interviews/me/interviews");
-
-            console.log(res.data);
-
             setInterviews(res.data.interview);
 
         } catch (err) {
-
             console.log(err);
-
         }
 
     };
@@ -61,7 +55,6 @@ function Interviews() {
                     </button>
                     <button
                             onClick={() => navigate("/generate-interview")}
-                            // className="w-full text-left flex gap-2 items-center px-5 py-3 hover:bg-gray-100"
                             className="bg-green-600 text-white px-12 py-2 ml-4 rounded-lg mb-5"
                     >
                               AI Create Interview

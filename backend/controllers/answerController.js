@@ -22,7 +22,7 @@ const createAnswer= async (req, res)=>{
         });
 
     }catch(err){
-        console.log(err);
+        console.error(err);
         return res.status(500).json({
             success:false,
             message:"internal server error",
@@ -43,7 +43,7 @@ const getAnswerByInterview= async(req, res)=>{
             answers,
         });
     }catch(err){
-        console.log(err);
+        console.error(err);
         return res.status(500).json({
             success:false,
             message:"internal server error",
@@ -85,7 +85,7 @@ const evaluateAnswer= async(req, res)=>{
             answer,
         });
     }catch(err){
-        console.log(err);
+        console.error(err);
         return res.status(500).json({
             success:false,
             message:"internal server error",
@@ -140,7 +140,7 @@ const getInterviewReport= async(req, res)=>{
         })
         
     }catch(err){
-        console.log(err);
+        console.error(err);
         return res.status(500).json({
             success:false,
             message:"internal server error",

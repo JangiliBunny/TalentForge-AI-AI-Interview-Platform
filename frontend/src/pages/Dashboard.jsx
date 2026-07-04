@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import api from "../services/api";
 
@@ -18,10 +19,20 @@ import {
 function Dashboard() {
 
   const [stats, setStats] = useState(null);
+  const [user, setUser] = useState(null);
+
    const navigate=useNavigate();
   useEffect(() => {
     fetchDashboard();
   }, []);
+
+  useEffect(() => {
+
+    const loggedInUser = JSON.parse(localStorage.getItem("user"));
+
+    setUser(loggedInUser);
+
+}, []);
 
   const fetchDashboard = async () => {
     try {
@@ -33,6 +44,11 @@ function Dashboard() {
     } catch (err) {
 
       console.log(err);
+      toast.error(
+        err.response?.data?.message ||
+        "Something went wrong."
+    );
+
 
     }
   };
@@ -51,7 +67,7 @@ function Dashboard() {
 
           <div className="mb-8">
                <h1 className="text-3xl font-bold mb-2">
-                   Welcome back, Bunny 👋
+                   Welcome back, {user?.name || "User"} 👋
                </h1>
 
                <p className="text-gray-500 mt-5">

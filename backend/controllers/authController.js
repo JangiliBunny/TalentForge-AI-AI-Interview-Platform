@@ -42,7 +42,7 @@ const register=async(req, res)=>{
             }
         });
     } catch(err){
-          console.log(err);
+          console.error(err);
         return res.status(500).json({
             success:false,
             message:"server issue",
@@ -97,7 +97,7 @@ const login= async(req, res)=>{
     }
        });
     }catch(err){
-        console.log(err);
+        console.error(err);
 
         return res.status(500).json({
             success:false,
@@ -131,7 +131,7 @@ const getMe= async(req , res)=>{
             user
         });
     }catch(err){
-        console.log(err);
+        console.error(err);
 
         return res.status(500).json({
             success:false,
