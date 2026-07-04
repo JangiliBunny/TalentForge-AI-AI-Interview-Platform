@@ -14,7 +14,18 @@ const adminRoutes=require("./routes/adminRoutes");
 
 connectDb();
 
-app.use(cors());
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://talent-forge-ai-ai-interview-platfo.vercel.app"
+];
+
+app.use(
+    cors({
+        origin: allowedOrigins,
+        credentials: true,
+    })
+);
+
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
