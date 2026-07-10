@@ -1,6 +1,9 @@
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import AdminRoute from "./components/AdminRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
+import HomeRedirect from "./components/HomeRedirect";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -30,8 +33,12 @@ function App(){
     <BrowserRouter> 
     <Routes>
        <Route
-           path="/login"
-          element={<Login />}
+          path="/login"
+         element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+         }
        />
 
        <Route
@@ -39,14 +46,15 @@ function App(){
           element={<Register />}
        />
        <Route
-           path="/dashboard"
-          element={<Dashboard />}
-       />
+         path="/dashboard"
+         element={
+           <ProtectedRoute>
+             <Dashboard />
+           </ProtectedRoute>
+          }
+        />
 
-       <Route
-           path="/"
-          element={<Dashboard />}
-       />
+       <Route path="/" element={<HomeRedirect />} />
 
        <Route 
             path="/questions"
